@@ -44,7 +44,7 @@
                 🎮 أهلاً بكم في <span class="text-blue-400 font-black">متجر أبو يونس</span> - تصفح واطلب ألعابك مباشرة عبر الواتساب 🎮
             </p>
             <div class="relative max-w-xl mx-auto">
-                <input type="text" id="search-input" oninput="filterGames()" placeholder="ابحث عن اسم اللعبة هنا..." class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-3 px-11 text-sm focus:outline-none focus:border-blue-500 transition shadow-inner">
+                <input type="text" id="search-input" oninput="filterGames()" placeholder="ابحث عن رقم اللعبة أو اسمها..." class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-3 px-11 text-sm focus:outline-none focus:border-blue-500 transition shadow-inner">
                 <i class="fa-solid fa-magnifying-glass absolute right-4 top-3.5 text-gray-400"></i>
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div id="games-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
         <div id="no-results" class="hidden text-center py-16 text-gray-400">
             <i class="fa-solid fa-circle-exclamation text-4xl mb-2 text-gray-600"></i>
-            <p class="text-lg">لم يتم العثور على ألعاب بهذا الاسم</p>
+            <p class="text-lg">لم يتم العثور على ألعاب مطابقة</p>
         </div>
     </main>
 
@@ -82,12 +82,17 @@
     </footer>
 
     <script>
-        // قائمة الألعاب مع مسار الصور الصحيح داخل مجلد images
-        const games = [
-            { id: 1, name: "God of War Ragnarok", image: "images/1.jpg" },
-            { id: 2, name: "Spider-Man 2", image: "images/2.jpg" },
-            // يمكنك إضافة باقي ألعابك هنا بنفس النمط
-        ];
+        // توليد الألعاب تلقائياً بناءً على أسماء الصور (تأكد من تعديل الرقم أدناه ليطابق عدد صورك الإجمالي)
+        const totalImagesCount = 183; // <--- ضع هنا إجمالي عدد الصور لديك في المجلد
+        const games = [];
+
+        for (let i = 1; i <= totalImagesCount; i++) {
+            games.push({
+                id: i,
+                name: `لعبة بلايستيشن 4 - #${i}`,
+                image: `images/${i}.jpg`
+            });
+        }
 
         let cart = [];
 
@@ -106,7 +111,7 @@
                 grid.innerHTML += `
                     <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-lg flex flex-col transition hover:border-blue-500/50 hover:shadow-blue-500/10">
                         <div class="aspect-[3/4] overflow-hidden bg-gray-950 relative">
-                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
+                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src='https://via.placeholder.com/300x400?text=PS4+Game'">
                         </div>
                         <div class="p-4 flex flex-col flex-grow justify-between">
                             <h3 class="font-bold text-white text-sm md:text-base mb-3 line-clamp-2">${game.name}</h3>
@@ -178,8 +183,7 @@
             cart.forEach((item, index) => {
                 text += `${index + 1}- ${item.name}%0A`;
             });
-            // استبدل رقم الهاتف أدناه برقم الواتساب الخاص بك مع رمز الدولة (مثلاً 964...)
-            let phone = "9647800000000"; 
+            let phone = "9647800000000"; // استبدله برقم واتساب الخاص بك
             window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
         }
 
